@@ -1,0 +1,21 @@
+[
+ {
+  "directory": "/home/lperis/Work/CommonCore/5th/CPP/CPP_O9/ex00",
+  "arguments": [
+   "c++",
+   "-Wall",
+   "-Werror",
+   "-Wextra",
+   "-std=c++98",
+   "-MMD",
+   "-MP",
+   "-g",
+   "-Iinclude",
+   "-c",
+   "src/main.cpp",
+   "-o",
+   "object/main.o"
+  ],
+  "file": "src/main.cpp"
+ }
+]

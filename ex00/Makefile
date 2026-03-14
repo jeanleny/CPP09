@@ -6,8 +6,11 @@ RM			= rm -f
 HEADER		= include
 SRC_DIR		= src
 BUILD_DIR	= object
-NAME		= easyfind
-SRC			+= src/main.cpp				
+NAME		= btc
+SRC			+= src/main.cpp					\
+			   src/files.cpp				\
+			   src/Exception.cpp			\
+			   src/Tools.cpp				\
 
 OBJ			= ${SRC:$(SRC_DIR)/%.cpp=$(BUILD_DIR)/%.o}
 DEP			= $(OBJ:.o=.d)
