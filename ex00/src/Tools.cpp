@@ -5,7 +5,7 @@ int		getActualYear()
 	std::time_t time = std::time(NULL);
 	struct tm current_time = *std::localtime(&time);
 
-	return (current_time.tm_mon + 1);
+	return (current_time.tm_year + 1900);
 }
 
 int		getActualMonth()
@@ -13,7 +13,7 @@ int		getActualMonth()
 	std::time_t time = std::time(NULL);
 	struct tm current_time = *std::localtime(&time);
 
-	return (current_time.tm_year);
+	return (current_time.tm_mon + 1);
 }
 
 int		getActualDay()
@@ -64,35 +64,41 @@ bool isValidDay(std::string day, s_dates dates)
 {
 	if (!strIsDigit(day))
 		return (false);
+	if (dates.day < 1 || dates.day > 31)
+		return (false);
 	if (dates.year == dates.aYear)
 	{
 		if (dates.month == dates.aMonth)
-			if (dates.day < 1 || dates.day > dates.aDay)
+			if (dates.day > dates.aDay)
 				return (false);
 	}
 	else
 	{
-		if (dates.day < 1)
+		if (!checkDayLogic(dates))
 			return (false);
-		if (dates.month % 2 == 0 && dates.day > 30)
-		{
-			if (dates.month != 8)
-				return (false);
-		}
-		else if (dates.month == 2)
-		{
-			if (dates.day > 28)
-				if (dates.day != 29 && dates.year % 4 != 0)
-					return (false);
-		}
-		else
-		{
-			if (dates.day > 31)
-				return (false);
-		}
 	}
 	return (true);
 };
+
+bool checkDayLogic(s_dates dates)
+{
+	if (dates.month == 2)
+	{
+		if (dates.day == 29 && dates.year % 4 != 0)
+			return (false);
+	}
+	else if (dates.month <= 7)
+	{
+		if (dates.month % 2 == 0 && dates.day > 30)
+			return (false);
+	}
+	else if (dates.month >= 8)
+	{
+		if (dates.month % 2 != 0 && dates.day > 30)
+			return (false);
+	}
+	return (true);
+}
 
 s_dates	setDates(std::string year,std::string month,std::string day)
 {
@@ -100,9 +106,9 @@ s_dates	setDates(std::string year,std::string month,std::string day)
 	dates.year = atoi(year.c_str());
 	dates.month = atoi(month.c_str());
 	dates.day = atoi(day.c_str());
-	dates.year = getActualYear();
-	dates.month = getActualMonth();
-	dates.day = getActualDay();
+	dates.aYear = getActualYear();
+	dates.aMonth = getActualMonth();
+	dates.aDay = getActualDay();
 
 	return (dates);
 }
@@ -116,11 +122,13 @@ bool wrongDateFormat(std::string date)
 		std::string day = date.substr(8, 2);
 		s_dates dates = setDates(year, month, day);
 		if (!isValidYear(year, dates))
-			return (false);
+			throw WrongYearException();
 		if (!isValidMonth(month, dates))
-			return (false);
+			throw WrongMonthException();
 		if (!isValidDay(day, dates))
-			return (false);
+			throw WrongDayException();
 	}
+	else
+		return (true);
 	return (false);
 }
