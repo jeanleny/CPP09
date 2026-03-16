@@ -1,8 +1,46 @@
 #include <btc.h>
 
-std::map<std::string,float> createInputContent(char *input, s_files files)
+std::string	datesLoop(s_files files, s_dates date)
 {
-	std::map<std::string, float> mapContent;
+	std::map<std::string, float>::iterator it;
+	for (it = files.data.begin(); it != files.data.end(); it++)
+	{
+		std::string year = it->first.substr(0, 4);
+		std::string month = it->first.substr(5, 2);
+		std::string day = it->first.substr(8, 2);
+		s_dates dataDates = setDates(year, month, day);
+		if (dataDates.day >= date.day && dataDates.month >= date.month && dataDates.year >= date.year)
+			return ((--it)->first);
+	}
+	return ("");
+}
+
+std::string getClosestDate(s_files files, std::string date)
+{
+	std::string year = date.substr(0, 4);
+	std::string month = date.substr(5, 2);
+	std::string day = date.substr(8, 2);
+	s_dates dates = setDates(year, month, day);
+	return (datesLoop(files, dates));
+}
+
+void	displayResult(float value, s_files files, std::string date)
+{
+	std::string	closest;
+	try
+	{
+		files.data.at(date);
+		std::cout << date << " => " << value << " = " << value * files.data[date] << std::endl;
+	}
+	catch(std::exception &e)
+	{
+		closest = getClosestDate(files, date);
+		std::cout << date << " => " << value << " = " << value * files.data[closest] << std::endl;
+	}
+}
+
+void convertInput(char *input, s_files files)
+{
 	std::ifstream	f(input);
 	std::string 	line;
 	std::string 	date;
@@ -34,12 +72,10 @@ std::map<std::string,float> createInputContent(char *input, s_files files)
 			std::cout << "The Value must be either a float or an integer between 0 and 1000" << std::endl;
 			continue ;
 		}
-		mapContent[date] = value;
-		std::cout << "input content " << mapContent[date] << std::endl;
-		std::cout << "value : " << files.data[date] << std::endl;
+		files.input[date] = value;
+		displayResult(value, files, date);
 	}
 	f.close();
-	return (mapContent);
 }
 
 std::map<std::string,float> createCsvContent()
@@ -70,11 +106,10 @@ std::map<std::string,float> createCsvContent()
 	return (mapContent);
 }
 
-s_files	setfiles(char *input)
+s_files	setfiles()
 {
 	s_files files;
 	files.data = createCsvContent();
-	files.input = createInputContent(input, files);
 	
 	return (files);
 }

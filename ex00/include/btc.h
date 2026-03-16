@@ -24,13 +24,14 @@ typedef struct s_files
 	std::map<std::string, float> input;
 } t_files;
 
-s_files						setfiles(char *input);
+s_dates	setDates(std::string year,std::string month,std::string day);
+s_files						setfiles();
 bool 						wrongDateFormat(std::string date);
 bool 						isValidDay(std::string day);
 bool 						isValidMonth(std::string month);
 bool 						isValidYear(std::string year);
 bool 						checkDayLogic(s_dates dates);
 std::map<std::string,float> createCsvContent();
-std::map<std::string,float> createInputContent(char *input, s_files files);
+void convertInput(char *input, s_files files);
 
 #endif
