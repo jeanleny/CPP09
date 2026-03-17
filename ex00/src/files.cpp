@@ -2,6 +2,7 @@
 
 std::string	datesLoop(s_files files, s_dates date)
 {
+	bool	first = true;
 	std::map<std::string, float>::iterator it;
 	for (it = files.data.begin(); it != files.data.end(); it++)
 	{
@@ -10,7 +11,12 @@ std::string	datesLoop(s_files files, s_dates date)
 		std::string day = it->first.substr(8, 2);
 		s_dates dataDates = setDates(year, month, day);
 		if (dataDates.day >= date.day && dataDates.month >= date.month && dataDates.year >= date.year)
-			return ((--it)->first);
+		{
+			if (!first)
+				--it;
+			return ((it)->first);
+		}
+		first = false;
 	}
 	return ("");
 }
@@ -64,6 +70,7 @@ void convertInput(char *input, s_files files)
 		catch (std::exception &e)
 		{
 			std::cout << e.what() << std::endl;
+			continue ;
 		}
 		pos++;
 		value = atof(line.substr(pos + 1).c_str());

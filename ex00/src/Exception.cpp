@@ -2,7 +2,7 @@
 
 const	char* WrongFileException::what() const throw()
 {
-	return ("The file is wrong");
+	return ("The format is wrong");
 }
 
 const	char* WrongYearException::what() const throw()

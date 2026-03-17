@@ -129,6 +129,6 @@ bool wrongDateFormat(std::string date)
 			throw WrongDayException();
 	}
 	else
-		return (true);
+		throw WrongFileException();
 	return (false);
 }
