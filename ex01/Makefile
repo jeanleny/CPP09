@@ -8,8 +8,7 @@ SRC_DIR		= src
 BUILD_DIR	= object
 NAME		= RPN
 SRC			+= src/main.cpp				\
-			   src/rpn.cpp				\
-			   src/Tools.cpp		
+			   src/RPN.cpp				\
 
 OBJ			= ${SRC:$(SRC_DIR)/%.cpp=$(BUILD_DIR)/%.o}
 DEP			= $(OBJ:.o=.d)

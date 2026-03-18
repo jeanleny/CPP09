@@ -6,7 +6,38 @@
 #include <map>
 #include <cstdlib>
 #include <ctime>
-#include <Exception.hpp>
+#include <exception>
+
+class WrongFileException : public std::exception
+{
+	public :
+		const char *what () const throw();
+};
+
+class WrongYearException : public std::exception
+{
+	public :
+		const char *what () const throw();
+};
+
+class WrongMonthException : public std::exception
+{
+	public :
+		const char *what () const throw();
+};
+
+class WrongDayException : public std::exception
+{
+	public :
+		const char *what () const throw();
+};
+
+class WrongValueException : public std::exception
+{
+	public :
+		const char *what () const throw();
+};
+
 
 typedef struct s_dates
 {

@@ -1,4 +1,4 @@
-#include <rpn.h>
+#include <RPN.hpp>
 
 int main(int argc, char **argv)
 {
@@ -9,6 +9,13 @@ int main(int argc, char **argv)
 			std::cout << "Error" << std::endl;
 			return (0);
 		}
-		ftRpn(argv[1]);
+		try
+		{
+			ftRpn(argv[1]);
+		}
+		catch(std::exception &e)
+		{
+			std::cout << e.what() << std::endl;
+		}
 	}
 }

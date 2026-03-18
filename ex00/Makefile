@@ -8,9 +8,7 @@ SRC_DIR		= src
 BUILD_DIR	= object
 NAME		= btc
 SRC			+= src/main.cpp					\
-			   src/files.cpp				\
-			   src/Exception.cpp			\
-			   src/Tools.cpp				\
+			   src/BitcoinExchange.cpp		\
 
 OBJ			= ${SRC:$(SRC_DIR)/%.cpp=$(BUILD_DIR)/%.o}
 DEP			= $(OBJ:.o=.d)
