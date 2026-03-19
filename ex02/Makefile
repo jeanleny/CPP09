@@ -6,8 +6,9 @@ RM			= rm -f
 HEADER		= include
 SRC_DIR		= src
 BUILD_DIR	= object
-NAME		= easyfind
-SRC			+= src/main.cpp				
+NAME		= PmergeMe
+SRC			+= src/main.cpp \
+			   src/PmergeMe.cpp
 
 OBJ			= ${SRC:$(SRC_DIR)/%.cpp=$(BUILD_DIR)/%.o}
 DEP			= $(OBJ:.o=.d)
