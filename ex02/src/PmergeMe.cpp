@@ -9,25 +9,36 @@ void	displayDeque(std::deque<int> nb)
 	std::cout << std::endl;
 }
 
-/*void	swapBlock(size_t blockSize, std::deque<int> &nb, size_t index)
+bool	swapNeeded(int nb1, int nb2)
 {
-	std::deque<int> newNb;
-	size_t i;
+	return (nb1 > nb2);	
+}
 
-}*/
+bool	outOfBounds(size_t index, size_t bound)
+{
+	return (index < bound);
+}
+
+void	swapBlock(size_t blockSize, std::deque<int> &nb, size_t i1, size_t i2)
+{
+	int	tmp;
+	for(size_t i = 0; i < blockSize; i++)
+	{
+		tmp = nb[i1];
+		nb[i1] = nb[i2];
+		nb[i2] = tmp;
+		i2--;
+		i1--;
+	}
+}
 
 void	FjMerge(size_t blockSize, std::deque<int> &nb)
 {
 	size_t i = blockSize - 1;
 	for (; i < nb.size(); i += blockSize)
 	{
-		if (i + blockSize < nb.size())
-		{
-//			if (nb[i] < nb[i + blockSize])
-//				swapBlock(blockSize, nb, index);
-//			else
-				//swapBlock(blockSize, nb, i);
-		}
+		if (outOfBounds(i + blockSize, nb.size()) && swapNeeded(nb[i], nb[i + blockSize]))
+			swapBlock(blockSize, nb, i, i + blockSize);
 		i += blockSize;
 	}
 }
