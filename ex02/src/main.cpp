@@ -35,27 +35,32 @@ void setDeque(std::deque<int> &first, std::deque<int> &second, std::deque<int> n
 
 int	getExp(int nb, int exp)
 {
-	for ()
+	int res = nb;
+	for (int i = 1; i < exp; i++)
+	{
+		res *= nb;
+	}
+	return(res);
 }
 
-size_t	getTk(size_t  oldTk, int index)
+/*size_t	getTk(size_t  oldTk, int index)
 {
 	size_t newTk = oldTk - 1 + getExp(index, 2) - 1;
-}
+}*/
 
 void	insert(std::deque<int> nb)
 {
 	std::deque<int> first;
 	std::deque<int> second;
-	size_t	t_k = 0;
+	//size_t	t_k = 0;
 	
 	setDeque(first, second, nb);
 	displayDeque(first);
 	displayDeque(second);
-	for (size_t t_k = 0; t_k < second.size(); i++)
+	std::cout << "exp : " << getExp(9, 9) << std::endl;
+	/*for (size_t t_k = 0; t_k < second.size(); i++)
 	{
-		t_k = getTk(t_k);
-	}
+	}*/
 }
 
 int main(int argc, char **argv)
