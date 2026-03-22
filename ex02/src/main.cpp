@@ -37,9 +37,7 @@ int	getExp(int nb, int exp)
 {
 	int res = nb;
 	for (int i = 1; i < exp; i++)
-	{
 		res *= nb;
-	}
 	return(res);
 }
 
@@ -52,15 +50,29 @@ void	insert(std::deque<int> nb)
 {
 	std::deque<int> first;
 	std::deque<int> second;
-	//size_t	t_k = 0;
+	size_t	t_k = 1;
 	
 	setDeque(first, second, nb);
+
+	std::cout << "before : \n";
 	displayDeque(first);
 	displayDeque(second);
 	std::cout << "exp : " << getExp(9, 9) << std::endl;
-	/*for (size_t t_k = 0; t_k < second.size(); i++)
+	for (size_t j = 0; j > t_k; j++)
 	{
+		getTk();
+	}
+	/*for (size_t i = 0; i < t_k; i++)
+	{
+		if (swapNeeded(first[i], second[0]))
+		{
+			first.insert(first.begin() , second[i]);
+			second.erase(second.begin());
+		}
 	}*/
+	std::cout << "after : \n";
+	displayDeque(first);
+	displayDeque(second);
 }
 
 int main(int argc, char **argv)
@@ -69,7 +81,6 @@ int main(int argc, char **argv)
 	std::deque<int> val;
 	for (size_t j = 0; j < 11; j++)
 		val.push_back(value[j]);
-	//displayDeque(val);
 	insert(val);
 	return (1);
 	if (argc > 1)

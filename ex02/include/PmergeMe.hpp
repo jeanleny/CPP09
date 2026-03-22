@@ -12,6 +12,7 @@
 	int	second;
 } t_comp;*/
 
+bool			swapNeeded(int nb1, int nb2);
 bool			strIsDigit(std::string str);
 bool			isValidInput(size_t size, char **input);
 void			PmergeMe(std::deque<int> nb);
