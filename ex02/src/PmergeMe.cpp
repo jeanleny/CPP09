@@ -51,6 +51,7 @@ void	FjCallBack(size_t blockSize, size_t nbSize, std::deque<int> nb)
 	FjMerge(blockSize, nb);
 	displayDeque(nb);
 	FjCallBack(blockSize * 2, nbSize, nb);
+	//insert(nb, blockSize);
 }
 
 void	PmergeMe(std::deque<int> nb)

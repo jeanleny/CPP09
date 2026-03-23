@@ -22,15 +22,37 @@ bool	isValidInput(size_t size,char **input, std::deque<int>& nb)
 	return (true);
 }
 
-void setDeque(std::deque<int> &first, std::deque<int> &second, std::deque<int> nb)
+size_t	getNbBlock(size_t size, size_t blockSize)
 {
-	for (size_t i = 0; i < nb.size(); i++)
+	return(size / blockSize);
+}
+
+size_t	convertIndex(size_t indexBlock, size_t blockSize)
+{
+	return (indexBlock * blockSize);
+}
+
+void	pushBlock(std::deque<int> &first, std::deque<int> &second, size_t blockSize, size_t indexBlock)
+{
+	size_t index = convertIndex(indexBlock, blockSize);
+	for(size_t i = 0 ; i < blockSize; i++)
+	{
+		first.push_back(second[index + i]);
+	}
+}
+
+void setDeque(std::deque<int> &first, std::deque<int> &second, std::deque<int> nb, size_t blockSize)
+{
+	size_t i;
+	for (i = 0; i < getNbBlock(nb.size(), blockSize); i++)
 	{
 		if (i % 2 == 0)
-			second.push_back(nb[i]);
+			pushBlock(second, nb, blockSize, i);
 		else
-			first.push_back(nb[i]);
+			pushBlock(first, nb, blockSize, i);
 	}
+	for (i = convertIndex(i, blockSize); i < nb.size(); i++)
+		first.push_back(nb[i]);
 }
 
 int	getExp(int nb, int exp)
@@ -41,47 +63,102 @@ int	getExp(int nb, int exp)
 	return(res);
 }
 
-/*size_t	getTk(size_t  oldTk, int index)
+size_t	getTk(size_t  oldTk, int k)
 {
-	size_t newTk = oldTk - 1 + getExp(index, 2) - 1;
-}*/
+	size_t newTk;
 
-void	insert(std::deque<int> nb)
+	newTk = getExp(2, k) - oldTk;
+	return (newTk);
+}
+
+size_t	getComp(size_t oldTk, size_t t_k)
+{
+	return (oldTk + t_k - 1);
+}
+
+void	insertBlock(std::deque<int> &nb, std::deque<int> &nb2, size_t index, size_t index2, size_t blockSize)
+{
+	std::deque<int>::iterator it = nb.begin() + convertIndex(index, blockSize);
+	std::deque<int>::iterator it2 = nb2.begin() + convertIndex(index2, blockSize);
+
+	for (size_t i = 0;  i < blockSize; i++)
+	{
+		std::cout << "insert : " << *it2 << std::endl;
+		std::cout << "insert pos : " << *it << std::endl;
+		it = nb.insert(it, *it2);
+		++it;
+		++it2;
+	}
+}
+
+int		blockValue(std::deque<int> nb, size_t indexBlock, size_t blockSize)
+{
+	size_t index = convertIndex(indexBlock, blockSize);
+	return(nb[index + blockSize - 1]);
+}
+
+void	searchNInsert(std::deque<int> &first, std::deque<int> &second, size_t blockSize, size_t index)
+{
+	bool inserted = false;
+	for (size_t j = 0; !inserted; j++)
+	{
+		if (j >= getNbBlock(first.size(), blockSize))
+		{
+			inserted = true;
+			insertBlock(first, second, j, index, blockSize);
+			continue;
+		}
+		if (swapNeeded(blockValue(first, j, blockSize), blockValue(second, index, blockSize)))
+		{
+			insertBlock(first, second, j, index, blockSize);
+			inserted = true;
+			continue ;
+		}
+	}
+}
+
+void	insert(std::deque<int> nb, size_t blockSize)
 {
 	std::deque<int> first;
 	std::deque<int> second;
 	size_t	t_k = 1;
+	size_t	oldTk = 1;
+	size_t	k = 2;
+	//size_t	comp = 1;
 	
-	setDeque(first, second, nb);
+	setDeque(first, second, nb, blockSize);
 
 	std::cout << "before : \n";
+	insertBlock(first, second, 0, 0, blockSize);
 	displayDeque(first);
 	displayDeque(second);
-	std::cout << "exp : " << getExp(9, 9) << std::endl;
-	for (size_t j = 0; j > t_k; j++)
+	for (; oldTk < getNbBlock(second.size(), blockSize); k++)
 	{
-		getTk();
-	}
-	/*for (size_t i = 0; i < t_k; i++)
-	{
-		if (swapNeeded(first[i], second[0]))
+		oldTk = t_k;
+		t_k = getTk(oldTk, k);
+		std::cout << "t_k : " << t_k << std::endl;
+	//	comp = getComp(oldTk, t_k);
+		for (size_t i = t_k; i > oldTk; i--)
 		{
-			first.insert(first.begin() , second[i]);
-			second.erase(second.begin());
+			if (i > getNbBlock(second.size(), blockSize))
+				continue;
+			searchNInsert(first, second, blockSize, i - 1);
 		}
-	}*/
+		displayDeque(first);
+		displayDeque(second);
+		std::cout << std::endl;
+	}
 	std::cout << "after : \n";
-	displayDeque(first);
-	displayDeque(second);
 }
 
 int main(int argc, char **argv)
 {
-	int value[] = {1, 2, 4, 5, 3, 6, 7, 9, 8, 10, 11};
+	//int value[] = {1, 2, 4, 5, 3, 6, 7, 9, 8, 10, 11};
+	int value[] = {4, 5, 3, 6, 7, 9, 8, 10, 1, 2, 11};
 	std::deque<int> val;
 	for (size_t j = 0; j < 11; j++)
 		val.push_back(value[j]);
-	insert(val);
+	insert(val, 2);
 	return (1);
 	if (argc > 1)
 	{
