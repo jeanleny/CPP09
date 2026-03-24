@@ -15,8 +15,9 @@
 bool			swapNeeded(int nb1, int nb2);
 bool			strIsDigit(std::string str);
 bool			isValidInput(size_t size, char **input);
-void			PmergeMe(std::deque<int> nb);
-void			FjCallBack(size_t blockSize, size_t nbSize, std::deque<int> nb);
-void	displayDeque(std::deque<int> nb);
+void			PmergeMe(std::deque<int> &nb);
+void			FjCallBack(size_t blockSize, size_t nbSize, std::deque<int> &nb);
+void			displayDeque(std::deque<int> nb);
+void			insert(std::deque<int>& nb, size_t blockSize);
 
 #endif

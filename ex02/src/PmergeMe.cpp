@@ -43,18 +43,16 @@ void	FjMerge(size_t blockSize, std::deque<int> &nb)
 	}
 }
 
-void	FjCallBack(size_t blockSize, size_t nbSize, std::deque<int> nb)
+void	FjCallBack(size_t blockSize, size_t nbSize, std::deque<int> &nb)
 {
-	std::cout << "block size : " << blockSize << std::endl;
 	if (blockSize > nbSize / 2)
 		return;
 	FjMerge(blockSize, nb);
-	displayDeque(nb);
 	FjCallBack(blockSize * 2, nbSize, nb);
-	//insert(nb, blockSize);
+	insert(nb, blockSize);
 }
 
-void	PmergeMe(std::deque<int> nb)
+void	PmergeMe(std::deque<int> &nb)
 {
 	size_t blockSize = 1;
 	size_t	nbSize = nb.size();

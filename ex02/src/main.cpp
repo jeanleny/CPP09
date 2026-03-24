@@ -83,10 +83,8 @@ void	insertBlock(std::deque<int> &nb, std::deque<int> &nb2, size_t index, size_t
 
 	for (size_t i = 0;  i < blockSize; i++)
 	{
-		std::cout << "insert : " << *it2 << std::endl;
-		std::cout << "insert pos : " << *it << std::endl;
 		it = nb.insert(it, *it2);
-		++it;
+		++it; 
 		++it2;
 	}
 }
@@ -97,69 +95,79 @@ int		blockValue(std::deque<int> nb, size_t indexBlock, size_t blockSize)
 	return(nb[index + blockSize - 1]);
 }
 
-void	searchNInsert(std::deque<int> &first, std::deque<int> &second, size_t blockSize, size_t index)
+size_t getDicho(int value, std::deque<int> nb, size_t size, size_t blockSize)
 {
-	bool inserted = false;
-	for (size_t j = 0; !inserted; j++)
+	int end = size - 1;
+	int start = 0;
+	int mid;
+	while(start < end)
 	{
-		if (j >= getNbBlock(first.size(), blockSize))
-		{
-			inserted = true;
-			insertBlock(first, second, j, index, blockSize);
-			continue;
-		}
-		if (swapNeeded(blockValue(first, j, blockSize), blockValue(second, index, blockSize)))
-		{
-			insertBlock(first, second, j, index, blockSize);
-			inserted = true;
-			continue ;
-		}
+		mid = (start + end) / 2;
+		if (value == blockValue(nb, mid, blockSize))
+			return (mid + 1);
+		if (value > blockValue(nb, mid, blockSize))
+			start = mid + 1;
+		else
+			end = mid - 1;
 	}
+	if (value > blockValue(nb, start, blockSize))
+		return (start + 1);
+	else
+		return (start);
 }
 
-void	insert(std::deque<int> nb, size_t blockSize)
+void	searchNInsert(std::deque<int> &first, std::deque<int> &second, size_t blockSize, size_t index, size_t comp)
+{
+	int bv =  blockValue(second, index, blockSize);
+	size_t dicho = getDicho(bv, first, comp, blockSize);
+	insertBlock(first, second, dicho, index, blockSize);
+}
+
+void	insert(std::deque<int> &nb, size_t blockSize)
 {
 	std::deque<int> first;
 	std::deque<int> second;
 	size_t	t_k = 1;
 	size_t	oldTk = 1;
 	size_t	k = 2;
-	//size_t	comp = 1;
+	size_t	comp = 1;
 	
 	setDeque(first, second, nb, blockSize);
 
-	std::cout << "before : \n";
 	insertBlock(first, second, 0, 0, blockSize);
-	displayDeque(first);
-	displayDeque(second);
 	for (; oldTk < getNbBlock(second.size(), blockSize); k++)
 	{
 		oldTk = t_k;
 		t_k = getTk(oldTk, k);
-		std::cout << "t_k : " << t_k << std::endl;
-	//	comp = getComp(oldTk, t_k);
+		comp = getComp(oldTk, t_k);
+		if (comp > getNbBlock(first.size(), blockSize))
+			comp = getNbBlock(first.size(), blockSize);
 		for (size_t i = t_k; i > oldTk; i--)
 		{
 			if (i > getNbBlock(second.size(), blockSize))
 				continue;
-			searchNInsert(first, second, blockSize, i - 1);
+			searchNInsert(first, second, blockSize, i - 1, comp);
 		}
-		displayDeque(first);
-		displayDeque(second);
 		std::cout << std::endl;
 	}
-	std::cout << "after : \n";
+	nb = first;
 }
 
 int main(int argc, char **argv)
 {
 	//int value[] = {1, 2, 4, 5, 3, 6, 7, 9, 8, 10, 11};
-	int value[] = {4, 5, 3, 6, 7, 9, 8, 10, 1, 2, 11};
+	//int value[] = {4, 5, 3, 6, 7, 9, 8, 10, 1, 2, 11};
+	/*int value[] = {1, 2, 3, 4, 5, 6, 7, 9};
 	std::deque<int> val;
-	for (size_t j = 0; j < 11; j++)
+	for (size_t j = 0; j < 8; j++)
 		val.push_back(value[j]);
-	insert(val, 2);
-	return (1);
+	size_t res = getDicho(8, val, val.size(), 1);
+	std::cout << res << std::endl;
+	val.insert(val.begin() + res, 8);
+	displayDeque(val);
+	return(1);
+	insert(val, 1);
+	return (1);*/
 	if (argc > 1)
 	{
 		std::deque<int> nb;
@@ -170,10 +178,9 @@ int main(int argc, char **argv)
 		}
 		std::cout << "Before:";
 		for (size_t i = 0; i < nb.size(); i++)
-		{
 			std::cout << nb[i] << " ";
-		}
-		std::cout << std::endl;
+		std::cout << "\n\n\n" << std::endl;
 		PmergeMe(nb);
+		displayDeque(nb);
 	}
 }
