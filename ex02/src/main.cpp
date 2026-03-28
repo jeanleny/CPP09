@@ -74,11 +74,17 @@ int main(int argc, char **argv)
 			std::cout << "Error" << std::endl;
 			return (0);
 		}
-		std::cout << "Before:";
-		for (size_t i = 0; i < nb.size(); i++)
-			std::cout << nb[i] << " ";
-		std::cout << "\n\n\n" << std::endl;
+		std::cout << "VECTOR : \n";
+		std::cout << "Before: ";
+		displayVector(vnb);
+		PmergeMe(vnb);
+		std::cout << "After:  ";
+		displayVector(vnb);
+		std::cout << "DEQUE : \n";
+		std::cout << "Before: ";
+		displayDeque(nb);
 		PmergeMe(nb);
+		std::cout << "After:  ";
 		displayDeque(nb);
 	}
 }

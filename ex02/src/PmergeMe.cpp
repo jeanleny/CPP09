@@ -103,9 +103,8 @@ void	insert(std::vector<int> &nb, size_t blockSize)
 }
 
 
-void	displayDeque(std::vector<int> nb)
+void	displayVector(std::vector<int> nb)
 {
-	std::cout << "nb : ";
 	for (size_t i = 0; i < nb.size(); i++)
 	{
 		std::cout << nb[i] << " ";	
@@ -263,7 +262,6 @@ void	insert(std::deque<int> &nb, size_t blockSize)
 
 void	displayDeque(std::deque<int> nb)
 {
-	std::cout << "nb : ";
 	for (size_t i = 0; i < nb.size(); i++)
 	{
 		std::cout << nb[i] << " ";	
