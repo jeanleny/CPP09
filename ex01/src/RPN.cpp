@@ -30,6 +30,26 @@ bool finalValidation(std::string input)
 	return (true);
 }
 
+void operation(char op, std::stack<int> &iStack)
+{
+	int right = iStack.top();
+	iStack.pop();
+	int left = iStack.top();
+	iStack.pop();
+	if (op == '-')
+		iStack.push(left - right);
+	if (op == '+')
+		iStack.push(left + right);
+	if (op == '/')
+	{
+		if (left == 0 || right == 0)
+			throw ErrorException();
+		iStack.push(left / right);
+	}
+	if (op == '*')
+		iStack.push(left * right);
+}
+
 void ftRpn(char *input)
 {
 	std::stack<int> iStack;
@@ -51,22 +71,7 @@ void ftRpn(char *input)
 		{
 			if (iStack.size() >= 2)
 			{
-				int right = iStack.top();
-				iStack.pop();
-				int left = iStack.top();
-				iStack.pop();
-				if (input[i] == '-')
-					iStack.push(left - right);
-				if (input[i] == '+')
-					iStack.push(left + right);
-				if (input[i] == '/')
-				{
-					if (left == 0 || right == 0)
-						throw ErrorException();
-					iStack.push(left / right);
-				}
-				if (input[i] == '*')
-					iStack.push(left * right);
+				operation(input[i], iStack);
 				input[i] = ' ';
 				i = index - 1;
 			}

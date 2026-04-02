@@ -1,6 +1,8 @@
 #ifndef PMERGEME_HPP
 # define PMERGEME_HPP
 
+#include <sys/time.h>
+#include <time.h>
 #include <iostream>
 #include <algorithm>
 #include <vector>

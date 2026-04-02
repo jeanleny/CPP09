@@ -1,0 +1,40 @@
+[
+ {
+  "directory": "/home/leny/Work/CommonCore/5th/CPP/CPP_09/ex00",
+  "arguments": [
+   "c++",
+   "-Wall",
+   "-Werror",
+   "-Wextra",
+   "-std=c++98",
+   "-MMD",
+   "-MP",
+   "-g",
+   "-Iinclude",
+   "-c",
+   "src/main.cpp",
+   "-o",
+   "object/main.o"
+  ],
+  "file": "src/main.cpp"
+ },
+ {
+  "directory": "/home/leny/Work/CommonCore/5th/CPP/CPP_09/ex00",
+  "arguments": [
+   "c++",
+   "-Wall",
+   "-Werror",
+   "-Wextra",
+   "-std=c++98",
+   "-MMD",
+   "-MP",
+   "-g",
+   "-Iinclude",
+   "-c",
+   "src/BitcoinExchange.cpp",
+   "-o",
+   "object/BitcoinExchange.o"
+  ],
+  "file": "src/BitcoinExchange.cpp"
+ }
+]
