@@ -8,6 +8,12 @@
 #include <ctime>
 #include <exception>
 
+class NoDataException : public std::exception
+{
+	public :
+		const char *what () const throw();
+};
+
 class NoSuchFileException : public std::exception
 {
 	public :

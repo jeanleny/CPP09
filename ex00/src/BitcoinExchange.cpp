@@ -133,6 +133,11 @@ bool wrongDateFormat(std::string date)
 	return (false);
 }
 
+const	char* NoDataException::what() const throw()
+{
+	return ("The data.csv doesn't exist");
+}
+
 const	char* NoSuchFileException::what() const throw()
 {
 	return ("The file doesn't exist");
@@ -259,7 +264,7 @@ std::map<std::string,float> createCsvContent()
 	float			value;
 	bool			first = true;
 	if (f.fail())
-		throw NoSuchFileException();
+		throw NoDataException();
 	while (getline(f, line))
 	{
 		if (first == true)
