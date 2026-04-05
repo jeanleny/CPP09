@@ -63,16 +63,6 @@ size_t	convertIndex(size_t indexBlock, size_t blockSize)
 	return (indexBlock * blockSize);
 }
 
-time_t	timeStamp()
-{
-	timeval time;
-	time_t	res;
-	gettimeofday(&time, NULL);
-
-	res = (time.tv_sec) + (time.tv_usec);
-	return (res);
-}
-
 int main(int argc, char **argv)
 {
 	if (argc > 1)
@@ -80,29 +70,22 @@ int main(int argc, char **argv)
 		std::deque<int> nb;
 		std::vector<int> vnb;
 		float t1;
-		float t2;
 		if (!isValidInput(argc - 1, argv + 1, nb, vnb))
 		{
 			std::cout << "Error" << std::endl;
 			return (0);
 		}
-		std::cout << "VECTOR : \n";
 		std::cout << "Before: ";
 		displayVector(vnb);
 		t1 = clock();
 		PmergeMe(vnb);
-		t2 = clock() - t1;
+		float tVec = clock() - t1;
 		std::cout << "After:  ";
 		displayVector(vnb);
-		std::cout << "elapsed time : " << t2 / CLOCKS_PER_SEC << std::endl;
-		std::cout << "DEQUE : \n";
-		std::cout << "Before: ";
-		displayDeque(nb);
+		std::cout << "Time to process " << argc - 1 << " with std::vector : " << tVec / CLOCKS_PER_SEC << " microseconds" << std::endl;
 		t1 = clock();
 		PmergeMe(nb);
-		t2 = clock() - t1;
-		std::cout << "After:  ";
-		displayDeque(nb);
-		std::cout << "elapsed time : " << t2 / CLOCKS_PER_SEC << std::endl;
+		float tDeq = clock() - t1;
+		std::cout << "Time to process " << argc - 1 << " with std::deque : " << tDeq / CLOCKS_PER_SEC << " microseconds" << std::endl;
 	}
 }

@@ -133,6 +133,11 @@ bool wrongDateFormat(std::string date)
 	return (false);
 }
 
+const	char* NoSuchFileException::what() const throw()
+{
+	return ("The file doesn't exist");
+}
+
 const	char* WrongFileException::what() const throw()
 {
 	return ("The format is wrong");
@@ -210,6 +215,8 @@ void convertInput(char *input, s_files files)
 	std::string 	date;
 	float			value;
 
+	if (f.fail())
+		throw NoSuchFileException();
 	while (getline(f, line))
 	{
 		size_t	pos = line.find("|");
@@ -251,6 +258,8 @@ std::map<std::string,float> createCsvContent()
 	std::string 	date;
 	float			value;
 	bool			first = true;
+	if (f.fail())
+		throw NoSuchFileException();
 	while (getline(f, line))
 	{
 		if (first == true)
