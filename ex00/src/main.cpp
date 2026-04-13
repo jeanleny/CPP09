@@ -2,7 +2,11 @@
 
 int	main(int argc, char **argv)
 {
-	if (argc == 2)
+	if (argc != 2)
+	{
+		std::cout << "The program must take one input file" << std::endl;
+	}
+	else
 	{
 		try
 		{

@@ -1,29 +1,5 @@
 #include <BitcoinExchange.hpp>
 
-int		getActualYear()
-{
-	std::time_t time = std::time(NULL);
-	struct tm current_time = *std::localtime(&time);
-
-	return (current_time.tm_year + 1900);
-}
-
-int		getActualMonth()
-{
-	std::time_t time = std::time(NULL);
-	struct tm current_time = *std::localtime(&time);
-
-	return (current_time.tm_mon + 1);
-}
-
-int		getActualDay()
-{
-	std::time_t time = std::time(NULL);
-	struct tm current_time = *std::localtime(&time);
-
-	return (current_time.tm_mday);
-}
-
 bool	strIsDigit(std::string str)
 {
 	for (size_t i = 0; i < str.size(); i++)
@@ -38,7 +14,7 @@ bool isValidYear(std::string year, s_dates dates)
 {
 	if (!strIsDigit(year))
 		return (false);
-	if (dates.year < 2009 || dates.year > dates.aYear)
+	if (dates.year < 2009)
 		return (false);
 	return (true);
 }
@@ -47,11 +23,6 @@ bool isValidMonth(std::string month,s_dates dates)
 {
 	if (!strIsDigit(month))
 		return (false);
-	if (dates.year == getActualYear())
-	{
-		if (dates.month < 1 || dates.month > dates.aMonth)
-			return (false);
-	}
 	else
 	{
 		if (dates.month < 1 || dates.month > 12)
@@ -66,12 +37,6 @@ bool isValidDay(std::string day, s_dates dates)
 		return (false);
 	if (dates.day < 1 || dates.day > 31)
 		return (false);
-	if (dates.year == dates.aYear)
-	{
-		if (dates.month == dates.aMonth)
-			if (dates.day > dates.aDay)
-				return (false);
-	}
 	else
 	{
 		if (!checkDayLogic(dates))
@@ -106,9 +71,6 @@ s_dates	setDates(std::string year,std::string month,std::string day)
 	dates.year = atoi(year.c_str());
 	dates.month = atoi(month.c_str());
 	dates.day = atoi(day.c_str());
-	dates.aYear = getActualYear();
-	dates.aMonth = getActualMonth();
-	dates.aDay = getActualDay();
 
 	return (dates);
 }
@@ -129,7 +91,7 @@ bool wrongDateFormat(std::string date)
 			throw WrongDayException();
 	}
 	else
-		throw WrongFileException();
+		return (true);
 	return (false);
 }
 
@@ -172,6 +134,7 @@ std::string	datesLoop(s_files files, s_dates date)
 {
 	bool	first = true;
 	std::map<std::string, float>::iterator it;
+	std::map<std::string, float>::iterator last = files.data.end();
 	for (it = files.data.begin(); it != files.data.end(); it++)
 	{
 		std::string year = it->first.substr(0, 4);
@@ -186,7 +149,7 @@ std::string	datesLoop(s_files files, s_dates date)
 		}
 		first = false;
 	}
-	return ("");
+	return ((--last)->first);
 }
 
 std::string getClosestDate(s_files files, std::string date)
@@ -213,6 +176,56 @@ void	displayResult(float value, s_files files, std::string date)
 	}
 }
 
+bool	validValue(std::string value)
+{
+	bool dot = false;
+	bool min = false;
+	bool plu = false;
+	for (size_t i = 0; i < value.size(); i++)
+	{
+		if (!isdigit(value[i]))
+		{
+			if (value[i] == '.' && !dot)
+			{
+				dot = true;
+				continue ;
+			}
+			if (value[i] == '+' && !plu)
+			{
+				plu = true;
+				continue ;
+			}
+			if (value[i] == '-' && !min)
+			{
+				min = true;
+				continue ;
+			}
+			return (false);
+		}
+	}
+	return (true);
+}
+
+bool	checkValue(float &value, size_t pos , std::string line)
+{
+	pos ++;
+	while (line[pos] && isspace(line[pos]))
+		pos++;
+	std::string strValue = line.substr(pos).c_str();
+	if (!validValue(strValue))
+	{
+		std::cout << "values must be numeric" << std::endl;
+		return (false);
+	}
+	value = atof(line.substr(pos).c_str());
+	if (value < 0 || value > 1000)
+	{
+		std::cout << "The Value must be either a float or an integer between 0 and 1000" << std::endl;
+		return (false);
+	}
+	return (true);
+}
+
 void convertInput(char *input, s_files files)
 {
 	std::ifstream	f(input);
@@ -227,7 +240,7 @@ void convertInput(char *input, s_files files)
 		size_t	pos = line.find("|");
 		if (pos == std::string::npos)
 		{
-			std::cout << "Bad input" << std::endl;
+			std::cout << "The input must be \"date | value\" formatted" << std::endl;
 			continue ;
 		}
 		if (pos != 0)
@@ -235,7 +248,8 @@ void convertInput(char *input, s_files files)
 		date = line.substr(0, pos);
 		try
 		{
-			wrongDateFormat(date);
+			if (wrongDateFormat(date))
+				continue ;
 		}
 		catch (std::exception &e)
 		{
@@ -243,12 +257,8 @@ void convertInput(char *input, s_files files)
 			continue ;
 		}
 		pos++;
-		value = atof(line.substr(pos + 1).c_str());
-		if (value < 0 || value > 1000)
-		{
-			std::cout << "The Value must be either a float or an integer between 0 and 1000" << std::endl;
-			continue ;
-		}
+		if (!checkValue(value, pos, line))
+ 			continue ;
 		files.input[date] = value;
 		displayResult(value, files, date);
 	}
