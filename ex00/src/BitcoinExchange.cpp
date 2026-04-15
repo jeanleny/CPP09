@@ -181,6 +181,8 @@ bool	validValue(std::string value)
 	bool dot = false;
 	bool min = false;
 	bool plu = false;
+	if (value.size() <= 0)
+		return (false);
 	for (size_t i = 0; i < value.size(); i++)
 	{
 		if (!isdigit(value[i]))
