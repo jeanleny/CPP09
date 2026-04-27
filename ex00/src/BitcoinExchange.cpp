@@ -10,11 +10,20 @@ bool	strIsDigit(std::string str)
 	return (true);
 }
 
+bool	isAnteBtc(s_dates dates)
+{
+	if (dates.year < 2009)
+		return (true);
+	if (dates.year == 2009 && dates.day == 01 && dates.month == 01)
+		return (true);
+	return (false);
+}
+
 bool isValidYear(std::string year, s_dates dates)
 {
 	if (!strIsDigit(year))
 		return (false);
-	if (dates.year < 2009)
+	if (isAnteBtc(dates))
 		return (false);
 	return (true);
 }
